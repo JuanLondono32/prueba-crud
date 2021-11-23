@@ -20,7 +20,7 @@ pipeline {
                 echo 'Compilando'
             }
         }
-        stage('Compile') {
+        stage('Package') {
             steps {
                 // Run Maven on a Unix agent.
                 bat "mvn -Dmaven.test.failure.ignore=true package"
