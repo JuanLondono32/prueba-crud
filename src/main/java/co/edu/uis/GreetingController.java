@@ -28,7 +28,7 @@ public class GreetingController {
 
 	@GetMapping("/view")
 	public List<Book> view(@RequestParam(value = "title", defaultValue = "World") String title) {
-		return repository.findByName(title);
+		return repository.findByTitle(title);
 
 	}
 
@@ -47,7 +47,7 @@ public class GreetingController {
 			book.setTitle(title);
 			repository.save(book);
 		}
-		return repository.findByName(title);
+		return repository.findByTitle(title);
 	}
 
 	@PostMapping("/register")
@@ -57,7 +57,7 @@ public class GreetingController {
 
 	@DeleteMapping("/delete")
 	public Greeting deleteBook(@RequestParam(value = "title", defaultValue = "World") String title) {
-		List<Book> books = repository.findByName(title);
+		List<Book> books = repository.findByTitle(title);
 
 		if (books != null) {
 			if (books.size() < 1) {
