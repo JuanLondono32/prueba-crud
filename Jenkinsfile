@@ -17,14 +17,14 @@ pipeline {
             steps {
                 // Run Maven on a Unix agent.
                 bat "mvn -Dmaven.test.failure.ignore=true compile"
-                bat "echo "Compilando""
+                echo 'Compilando'
             }
         }
         stage('Compile') {
             steps {
                 // Run Maven on a Unix agent.
                 bat "mvn -Dmaven.test.failure.ignore=true package"
-                bat "echo "Empaquetando""
+                echo 'Empaquetando'
             }
         }
     }
