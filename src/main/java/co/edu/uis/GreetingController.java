@@ -32,7 +32,7 @@ public class GreetingController {
 	}
 
 	@GetMapping("/getall")
-	public List<Book> getall() {
+	public List<Book> getAll() {
 		return repository.findAll();
 	}
 
