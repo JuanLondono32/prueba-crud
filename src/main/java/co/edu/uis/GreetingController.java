@@ -26,20 +26,18 @@ public class GreetingController {
 		this.repository = repository;
 	}
 
-	@GetMapping("/view")
-	public List<Book> view(@RequestParam(value = "title", defaultValue = "World") String title) {
-		return repository.findByTitle(title);
-
+	@GetMapping("/get/{id}")
+	public Book get(@PathVariable Long id) throws ResourceNotFoundException {
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ID necesario:" + id));
 	}
 
-	@GetMapping("/viewall")
-	public List<Book> viewall() {
+	@GetMapping("/getall")
+	public List<Book> getall() {
 		return repository.findAll();
-
 	}
 
-	@PatchMapping("book/{id}")
-	public List<Book> updateBook(@PathVariable Long id, @RequestParam(value = "title", defaultValue = "") String title)  
+	@PatchMapping("update/{id}")
+	public Book updateBook(@PathVariable Long id, @RequestParam(value = "title", defaultValue = "") String title)  
 	throws ResourceNotFoundException{
 		Book book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ID necesario:" + id));
 
@@ -47,7 +45,7 @@ public class GreetingController {
 			book.setTitle(title);
 			repository.save(book);
 		}
-		return repository.findByTitle(title);
+		return book;
 	}
 
 	@PostMapping("/register")
@@ -55,20 +53,11 @@ public class GreetingController {
 		return repository.save(new Book(title, author, lang, genre, pages));
 	}
 
-	@DeleteMapping("/delete")
-	public Greeting deleteBook(@RequestParam(value = "title", defaultValue = "World") String title) {
-		List<Book> books = repository.findByTitle(title);
-
-		if (books != null) {
-			if (books.size() < 1) {
-				return new Greeting(counter.incrementAndGet(), String.format(template_not, title));
-			}
-			Book book = books.get(0);
-			repository.deleteById(book.getId());
-			return new Greeting(counter.incrementAndGet(), String.format("%s has been deleted!", title));
-		}
-		return new Greeting(counter.incrementAndGet(), String.format(template_not, title));
-
+	@DeleteMapping("/delete/{id}")
+	public Book deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
+		Book book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ID necesario:" + id));
+		repository.deleteById(book.getId());
+		return book;
 	}
 
 }
